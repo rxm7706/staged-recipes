@@ -24,8 +24,8 @@ source:
       # (2) lean the umbrella pyproject.toml (langflow-base, not [complete]; drop
       # the 4 lfx-* hard deps). Both sets move to run_constraints. Source patches
       # instead of per-output in-build seds.
-      - patches/0001-strip-integration-deps.patch
-      - patches/0002-lean-umbrella-deps.patch
+      - 0001-strip-integration-deps.patch
+      - 0002-lean-umbrella-deps.patch
   # langflow-base's web UI (langflow/frontend/, the built React bundle) is
   # generated at release time (npm build) and ships ONLY in the PyPI wheel — the
   # GitHub tag carries just src/frontend SOURCE. Pull the prebuilt frontend from
