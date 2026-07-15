@@ -1,0 +1,64 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/prefix-dev/recipe-format/main/schema.json
+schema_version: 1
+
+context:
+  version: "3.0.0"
+
+package:
+  name: asgi-tools
+  version: ${{ version }}
+
+source:
+  url: https://pypi.org/packages/source/a/asgi-tools/asgi_tools-${{ version }}.tar.gz
+  sha256: 631455eb982434ab6b6f609d59f81fd636f314c98f50c604db3977b5e1a7a985
+
+build:
+  number: 0
+  skip:
+    - match(python, "<3.11")
+  script: ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+
+requirements:
+  build:
+    - ${{ compiler('c') }}
+    - ${{ stdlib('c') }}
+    - if: build_platform != target_platform
+      then:
+        - python
+        - cross-python_${{ target_platform }}
+        - cython
+  host:
+    - python
+    - pip
+    - setuptools
+    - wheel
+    - cython
+  run:
+    - python
+    - http-router >=4.0.0
+    - multidict >=6.6.3
+    - sniffio
+    - yarl >=1.8.2
+
+tests:
+  - python:
+      imports:
+        - asgi_tools
+      pip_check: true
+
+about:
+  summary: ASGI Toolkit to build web applications
+  description: |
+    ASGI-Tools is a toolkit for building ASGI web applications and middleware.
+    It provides request/response abstractions, routing, middleware, a test
+    client, and multipart form parsing. The form-parsing and multipart hot
+    paths are implemented in Cython.
+  license: MIT
+  license_file: LICENSE
+  homepage: https://github.com/klen/asgi-tools
+  repository: https://github.com/klen/asgi-tools
+  documentation: https://klen.github.io/asgi-tools
+
+extra:
+  recipe-maintainers:
+    - rxm7706
